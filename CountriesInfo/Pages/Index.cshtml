@@ -1,0 +1,63 @@
+﻿@page
+@model IndexModel
+@{
+    ViewData["Title"] = "Home page";
+}
+
+<div class="text-center">
+    <h2 class=" text-success">Countries<span class="text-danger display-5 fw-4">I</span>nfo</h2>
+    <form>
+        <div class="input-group">
+            <input type="search" asp-for="SearchName" class="form-control" />
+            <button type="submit" class="bg-success text-black rounded-2 border-none px-3 py-1">Search</button>
+        </div>
+    </form>
+</div>
+<div asp-validation-summary="ModelOnly" class="text-danger"></div>
+@if (Model.Country != null && Model.SearchName != null)
+{
+    <div class="container my-5 mx-auto d-flex flex-wrap">
+        
+            <div class="container my-2 col-4 flex-wrap">
+                <a href="/FullMovieInfo/@Model.Country.Cca2" class="card-link text-decoration-none">
+                    <img src="@Model.Country.Flag.Png" class="img-fluid " alt="@Model.Country.Name.Official Flag" />
+                    <h5 class="text-dark">@Model.Country.Name.Common</h5>
+                    @foreach (var language in Model.Country.Languages)
+                    {
+                    <p class="text-secondary"><span class="fw-bold">Languages:</span> @language.Value</p>
+                    }
+                <p class="text-secondary"><span class="fw-bold">Region:</span> @Model.Country.Region</p>
+                <p class="text-secondary"><span class="fw-bold">Capital:</span> @Model.Country.Capital[0]</p>
+
+                </a>
+            </div>
+
+        
+    </div>
+}
+else if(Model.Countries != null && Model.SearchName == null)
+{
+    <div class="container my-5 mx-auto d-flex flex-wrap">
+        @foreach (var country in Model.Countries)
+        {
+            <div class="container my-2 col-4 flex-wrap">
+                <a href="/FullMovieInfo/@country.Cca2" class="card-link text-decoration-none">
+                    <img src="@country.Flag.Png" class="img-fluid " alt="@country.Name.Common Flag" />
+                    <h5 class="text-dark">@country.Name.Common</h5>
+                    <p class="text-secondary"><span class="fw-bold">Languages:</span> @Model.LanguageSelect</p>
+                    <p class="text-secondary"><span class="fw-bold">Region:</span> @country.Region</p>
+                    <p class="text-secondary"><span class="fw-bold">Capital:</span> @country.Timezones[0]</p>
+
+                    
+                </a>
+            </div>
+
+        }
+    </div>
+}
+else
+{
+    <div class="container py-5 my-5 mx-auto d-flex justify-content-center">
+        <h2 class="text-danger fw-bold text-center">Could Not Find Country</h2>
+    </div>
+}
